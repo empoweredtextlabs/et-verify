@@ -1,0 +1,10 @@
+name: ET Verify V1
+description: Fail-closed V1 pull-request acceptance evaluation under trusted required-workflow authority
+outputs:
+  et-status:
+    description: ACCEPTED, REVIEW_REQUIRED, or BLOCKED
+  et-result-json:
+    description: Canonical machine-readable serialized V1 GitHub integration result
+runs:
+  using: node24
+  main: action/dist/github/action-entrypoint.js

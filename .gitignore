@@ -1,0 +1,4 @@
+dist/
+!action/dist/
+!action/dist/**
+node_modules/

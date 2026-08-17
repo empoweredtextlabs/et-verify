@@ -1,0 +1,28 @@
+# Store this workflow in a centrally governed repository and default branch.
+# Select it in an organization ruleset as a required workflow. A copy that a
+# pull request can modify does not provide the same authority.
+name: ET Verify V1 required
+
+on:
+  pull_request:
+
+# No path filters: every PR must produce the required ET result.
+permissions:
+  contents: read
+
+jobs:
+  et-verify:
+    name: ET Verify V1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the exact PR head with complete history
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Evaluate the exact PR head
+        # Replace the placeholder with the reviewed full public commit SHA
+        # containing action.yml and the packaged action/dist runtime.
+        uses: empoweredtextlabs/et-verify@<PUBLIC_RELEASE_COMMIT_SHA>

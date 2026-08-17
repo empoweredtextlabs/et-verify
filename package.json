@@ -1,0 +1,19 @@
+{
+  "name": "et-verify",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "package:action": "npm run build && node scripts/package-action.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npm run package:action && node --test action-test/package-action-containment.test.mjs action-test/smoke.test.mjs release-test/local-consumer.test.mjs",
+    "test:action-package": "npm run package:action && node --test action-test/package-action-containment.test.mjs action-test/smoke.test.mjs",
+    "test:release-consumer": "npm run package:action && node --test release-test/local-consumer.test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
