@@ -2,13 +2,13 @@
 
 ## What ET Verify is
 
-ET Verify is a GitHub Action for reviewing coding-agent pull requests before merge.
+ET Verify is a public GitHub Action alpha for reviewing coding-agent pull requests before merge.
 
 The agent reports what it changed and which required checks passed. Verify compares that report against repository state and trusted check evidence. It does not certify the code.
 
 ## Alpha status
 
-This is a public alpha. The supported alpha surface is the GitHub Action only. The CLI is not part of the supported alpha surface.
+The supported public-alpha surface is the GitHub Action only. The CLI is not part of the supported public-alpha surface.
 
 ## What it checks
 
@@ -30,13 +30,13 @@ Only `ACCEPTED` exits successfully. A human and the organization's GitHub rules 
 
 Start with the supplied [required-workflow template](examples/required-workflow/et-verify.yml). Store that workflow in the centrally governed location selected by your organization, and require it through your GitHub ruleset without path filters.
 
-Pin the Action to an immutable full commit SHA. During review of this unpublished candidate, the install coordinate is intentionally a placeholder:
+Install the Action using this exact immutable full commit SHA:
 
 ```yaml
-uses: empoweredtextlabs/et-verify@<PUBLIC_RELEASE_COMMIT_SHA>
+uses: empoweredtextlabs/et-verify@474a1d79599a714ccb2cac28a0b34c1444ad86c7
 ```
 
-Replace only `<PUBLIC_RELEASE_COMMIT_SHA>` with the reviewed public release commit after it exists. Keep the template's exact PR-head checkout, full history, disabled credential persistence, and read-only contents permission. Consumers do not run `npm install`; the committed runtime is under `action/dist/**`.
+Keep this exact full SHA; do not replace it with `main` or a mutable tag. Keep the template's exact PR-head checkout, full history, disabled credential persistence, and read-only contents permission. No npm installation is required; the committed runtime is under `action/dist/**`.
 
 See [ET Verify V1 GitHub Action](docs/GITHUB_ACTION_V1.md) for the complete execution and authority boundary.
 

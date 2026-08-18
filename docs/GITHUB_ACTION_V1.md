@@ -6,7 +6,7 @@ V1 supports `ORGANIZATION_RULESET_REQUIRED_WORKFLOW` only. The workflow source i
 
 An ordinary repository-local workflow modified by the pull request is `NON_AUTHORITATIVE_DEMO` material. It does not satisfy the hostile/careless-agent producer-authority guarantee and is not supplied as the production topology.
 
-The authoritative template is [`examples/required-workflow/et-verify.yml`](../examples/required-workflow/et-verify.yml). Before activation, replace `<PUBLIC_RELEASE_COMMIT_SHA>` in `empoweredtextlabs/et-verify@<PUBLIC_RELEASE_COMMIT_SHA>` with the reviewed full public commit SHA containing `action.yml` and `action/dist/**`. The template uses `pull_request`, grants only `contents: read`, supplies no secrets, persists no checkout credential, checks out `pull_request.head.sha`, and uses `fetch-depth: 0`.
+The authoritative template is [`examples/required-workflow/et-verify.yml`](../examples/required-workflow/et-verify.yml). It invokes ET Verify at the immutable full public commit SHA `empoweredtextlabs/et-verify@474a1d79599a714ccb2cac28a0b34c1444ad86c7`; do not replace this pin with `main` or a mutable tag. The template uses `pull_request`, grants only `contents: read`, supplies no secrets, persists no checkout credential, checks out `pull_request.head.sha`, and uses `fetch-depth: 0`.
 
 V1 does not administer rulesets through an API. An organization administrator must select the central workflow as a required workflow/status policy. A missing ET result must remain merge-blocking.
 
@@ -87,7 +87,7 @@ A downstream machine consumer can inspect the structured result even when ET int
 
 ```yaml
 - id: et
-  uses: empoweredtextlabs/et-verify@<PUBLIC_RELEASE_COMMIT_SHA>
+  uses: empoweredtextlabs/et-verify@474a1d79599a714ccb2cac28a0b34c1444ad86c7
 
 - name: Consume ET result
   if: always()

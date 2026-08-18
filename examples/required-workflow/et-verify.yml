@@ -23,6 +23,5 @@ jobs:
           persist-credentials: false
 
       - name: Evaluate the exact PR head
-        # Replace the placeholder with the reviewed full public commit SHA
-        # containing action.yml and the packaged action/dist runtime.
-        uses: empoweredtextlabs/et-verify@<PUBLIC_RELEASE_COMMIT_SHA>
+        # Keep this exact immutable full SHA; do not use main or a mutable tag.
+        uses: empoweredtextlabs/et-verify@474a1d79599a714ccb2cac28a0b34c1444ad86c7
