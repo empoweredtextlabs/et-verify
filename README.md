@@ -38,7 +38,7 @@ uses: empoweredtextlabs/et-verify@474a1d79599a714ccb2cac28a0b34c1444ad86c7
 
 Keep this exact full SHA; do not replace it with `main` or a mutable tag. Keep the template's exact PR-head checkout, full history, disabled credential persistence, and read-only contents permission. No npm installation is required; the committed runtime is under `action/dist/**`.
 
-See [ET Verify V1 GitHub Action](docs/GITHUB_ACTION_V1.md) for the complete execution and authority boundary.
+Follow the [Quickstart](docs/QUICKSTART.md) for the shortest supported setup path, then use the [Worked Examples](docs/WORKED_EXAMPLES.md) to see each result state in a concrete pull request. See [ET Verify V1 GitHub Action](docs/GITHUB_ACTION_V1.md) for the detailed execution and authority boundary, and give coding agents the exact [agent instructions](docs/AGENT_INSTRUCTIONS.md).
 
 ## Required trust model
 
@@ -50,7 +50,39 @@ See [ET Verify V1 GitHub Action](docs/GITHUB_ACTION_V1.md) for the complete exec
 
 The evaluated-base configuration is the complete required check set. A configured check omitted from the declaration produces `REVIEW_REQUIRED` unless qualifying trusted evidence shows that it failed, in which case the result is `BLOCKED`. Any qualifying failure for a configured check produces `BLOCKED`, whether that check was declared, omitted, or the declaration is absent. A declaration/configuration mismatch by `(checkId, kind)` produces explicit `REVIEW_REQUIRED` diagnostics. Incomplete required-check coverage never produces `ACCEPTED`.
 
-Give coding agents the exact [agent instructions](docs/AGENT_INSTRUCTIONS.md).
+## Acceptance declaration
+
+The coding agent commits `.et-verify/acceptance.json` at the exact pull-request head. The V1 declaration has exactly four top-level fields:
+
+- `schemaVersion` must be `1`.
+- `baseCommit` is the full 40-character lowercase commit SHA produced by `git merge-base <target-base-tip> <agent-head>` for the evaluated pull-request state.
+- `changeScope` has `kind: "EXACT_PATH_SET"`; its `paths` array is the complete, unique set of normalized repository-relative paths changed between that base and head. The set must include `.et-verify/acceptance.json` itself.
+- `checkResults` is a non-empty array containing every check from the evaluated-base `.et-verify/checks.json` exactly once by `checkId` and `kind`. V1 declarations contain only `declaredResult: "PASS"`.
+
+This is a complete declaration for a pull request whose only other changed path is `src/change.js` and whose evaluated-base configuration contains one `TEST` check named `test`:
+
+```json
+{
+  "schemaVersion": 1,
+  "baseCommit": "0123456789abcdef0123456789abcdef01234567",
+  "changeScope": {
+    "kind": "EXACT_PATH_SET",
+    "paths": [
+      ".et-verify/acceptance.json",
+      "src/change.js"
+    ]
+  },
+  "checkResults": [
+    {
+      "checkId": "test",
+      "kind": "TEST",
+      "declaredResult": "PASS"
+    }
+  ]
+}
+```
+
+The declaration is the agent's claim, not check evidence. ET Verify reads it from the committed head and independently evaluates it against the exact changed-path set and trusted check evidence. Regenerate and recommit it whenever the final path set or merge base changes. See the [Quickstart](docs/QUICKSTART.md) for the operating sequence and the [V1 GitHub Action reference](docs/GITHUB_ACTION_V1.md) for the deeper contract.
 
 ## Bootstrap
 
